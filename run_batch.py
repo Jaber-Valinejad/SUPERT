@@ -25,7 +25,7 @@ def main(args):
         docs = reader()
         filenames, summaries = reader.readSummaries()
 
-        supert.load_documents(source_docs)
+        supert.load_documents(docs)
         scores = supert(summaries)
 
         output[instance_id] = {filename: score for filename, score in zip(filenames, scores)}
