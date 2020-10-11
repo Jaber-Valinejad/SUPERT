@@ -19,12 +19,14 @@ class CorpusReader:
     def readSummaries(self):
         summary_path = os.path.join(self.data_path, 'summaries')
         summaries = []
+        filenames = []
         for tt in sorted(os.listdir(summary_path)):
             if tt[0] == '.':
                 continue # skip hidden files
             text = open(os.path.join(summary_path,tt), 'r').read()
-            summaries.append( text ) 
-        return summaries
+            filenames.append(tt)
+            summaries.append( text )
+        return filenames, summaries
 
     def readReferences(self):
         ref_path = os.path.join(self.data_path, 'references')
@@ -33,7 +35,7 @@ class CorpusReader:
             if tt[0] == '.':
                 continue # skip hidden files
             text = open(os.path.join(ref_path,tt), 'r').read()
-            refs.append( (os.path.join(ref_path,tt), sent_tokenize(text)) ) 
+            refs.append( (os.path.join(ref_path,tt), sent_tokenize(text)) )
         return refs
 
 
@@ -74,4 +76,3 @@ if __name__ == '__main__':
     print(docs)
     print(summs)
     print(refs)
-
