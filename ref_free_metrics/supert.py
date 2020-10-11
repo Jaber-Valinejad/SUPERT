@@ -13,15 +13,16 @@ from resources import BASE_DIR, LANGUAGE
 from ref_free_metrics.similarity_scorer import parse_documents
 
 class Supert():
-    def __init__(self, docs, ref_metric='top15', sim_metric='f1'):
-        self.bert_model = SentenceTransformer('bert-large-nli-stsb-mean-tokens') 
+    def __init__(self, ref_metric='top15', sim_metric='f1'):
+        self.bert_model = SentenceTransformer('bert-large-nli-stsb-mean-tokens')
+        self.ref_metric = ref_metric
         self.sim_metric = sim_metric
 
+    def load_documents(self, docs):
         # pre-process the documents
-        self.sent_info_dic, _, self.sents_weights = parse_documents(docs,None,ref_metric)
+        self.sent_info_dic, _, self.sents_weights = parse_documents(docs,None,self.ref_metric)
         self.all_token_vecs, self.all_tokens = self.get_all_token_vecs(self.bert_model, self.sent_info_dic)
-        self.ref_vecs, self.ref_tokens = self.build_pseudo_ref(ref_metric)
-
+        self.ref_vecs, self.ref_tokens = self.build_pseudo_ref(self.ref_metric)
 
     def get_all_token_vecs(self, model, sent_info_dict):
         all_sents = [sent_info_dict[i]['text'] for i in sent_info_dict]
@@ -159,6 +160,3 @@ class Supert():
         else:
             wanted_idx = [k for k in range(len(full_token))]
         return full_vec[wanted_idx], np.array(full_token)[wanted_idx]
-
-
-
