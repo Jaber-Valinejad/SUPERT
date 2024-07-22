@@ -17,13 +17,18 @@ class Supert():
         self.bert_model = SentenceTransformer('bert-large-nli-stsb-mean-tokens')
         self.ref_metric = ref_metric
         self.sim_metric = sim_metric
+    #def load_documents(self, docs):
+    #    # pre-process the documents
+    #    self.sent_info_dic, _, self.sents_weights = parse_documents(docs,None,self.ref_metric)
+    #    self.all_token_vecs, self.all_tokens = self.get_all_token_vecs(self.bert_model, self.sent_info_dic)
+    #    self.ref_vecs, self.ref_tokens = self.build_pseudo_ref(self.ref_metric)
 
     def load_documents(self, docs):
-        # pre-process the documents
-        self.sent_info_dic, _, self.sents_weights = parse_documents(docs,None,self.ref_metric)
-        self.all_token_vecs, self.all_tokens = self.get_all_token_vecs(self.bert_model, self.sent_info_dic)
-        self.ref_vecs, self.ref_tokens = self.build_pseudo_ref(self.ref_metric)
-
+       # Ensure this method is called with proper arguments
+       self.sent_info_dic, _, self.sents_weights = parse_documents(docs, None, self.ref_metric)
+       self.all_token_vecs, self.all_tokens = self.get_all_token_vecs(self.bert_model, self.sent_info_dic)
+       self.ref_vecs, self.ref_tokens = self.build_pseudo_ref(self.ref_metric)
+    
     def get_all_token_vecs(self, model, sent_info_dict):
         all_sents = [sent_info_dict[i]['text'] for i in sent_info_dict]
         all_vecs, all_tokens = model.encode(all_sents, token_vecs=True)
